@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>developpez vos competences</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+
+    body {
+      font-family: 'Roboto', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #000238;
+      color: #333;
+      transition: background 0.3s ease;
+    }
+
+    header {
+      background: #4CAF50;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      font-size: 1.5rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    main {
+      padding: 1rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .home-section, .domain-section, .qcm-section, .score-section, .help-section {
+      margin: 1rem 0;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .home-section.active, .domain-section.active, .qcm-section.active, .score-section.active, .help-section.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .home-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .home-menu button, .domain-list button, .submit-btn, .back-btn {
+      display: block;
+      width: 100%;
+      padding: 1rem;
+      margin: 0.5rem 0;
+      font-size: 1rem;
+      color: white;
+      background: #4CAF50;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .home-menu button:hover, .domain-list button:hover, .submit-btn:hover, .back-btn:hover {
+      background: #45a049;
+      transform: scale(1.02);
+    }
+
+    .domain-list button {
+      background: #007BFF;
+    }
+
+    .domain-list button:hover {
+      background: #0056b3;
+    }
+
+    .submit-btn {
+      background: #28a745;
+    }
+
+    .submit-btn:hover {
+      background: #218838;
+    }
+
+    .back-btn {
+      background: #6c757d;
+      margin-top: 1rem;
+    }
+
+    .back-btn:hover {
+      background: #545b62;
+    }
+
+    .question {
+      margin: 1rem 0;
+      padding: 1rem;
+      background: white;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      animation: fadeIn 0.5s ease;
+    }
+
+    .question h4 {
+      margin: 0.5rem 0;
+      color: #333;
+    }
+
+    .question input[type="checkbox"] {
+      margin-right: 0.5rem;
+    }
+
+    .score {
+      font-size: 2rem;
+      text-align: center;
+      color: #28a745;
+      animation: scaleIn 0.5s ease;
+    }
+
+    .help-content {
+      background: white;
+      padding: 1rem;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes scaleIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    DEVELOPPEZ VOS COMPETENCES EN CULTURES GENERALE
+  </header>
+  
+  <main>
+    <!-- Section d'accueil -->
+    <div class="home-section active">
+      <div class="home-menu">
+        <button onclick="showDomains()">COMMENCER</button>
+        <button onclick="showDomains()">APPRENDRE</button>
+        <button onclick="showHelp()">AIDE</button>
+      </div>
+    </div>
+
+    <!-- Section d'aide -->
+    <div class="help-section" style="display: none;">
+      <div class="help-content">
+        <h2>Comment utilisez ?</h2>
+        <p>Bienvenue dans l'Application QCM !</p>
+        <ul>
+          <li>Sélectionnez un domaine de questions</li>
+          <li>Répondez à toutes les questions en cochant les cases</li>
+          <li>Chaque réponse correcte rapporte 1 point</li>
+          <li>Chaque réponse incorrecte fait perdre 0,5 point</li>
+          <li>Tentez d'obtenir le meilleur score possible !</li>
+        </ul>
+      </div>
+      <button class="back-btn" onclick="showHome()">Retour</button>
+    </div>
+
+<!-- Section Apprendre -->
+<div class="learn-section" style="display: none;">
+    <h2>Choisissez un domaine à apprendre :</h2>
+    <div class="learn-domain-list">
+      <button class="home-menu button learn-domain-button" onclick="showLearnQuestions('ARTS')">ARTS, CULTURE</button>
+      <button class="home-menu button learn-domain-button" onclick="showLearnQuestions('HISTOIRE')">HISTOIRE</button>
+      <button class="home-menu button learn-domain-button" onclick="showLearnQuestions('GÉOGRAPHIE')">GÉOGRAPHIE</button>
+      <button class="home-menu button learn-domain-button" onclick="showLearnQuestions('SCIENCES')">SCIENCES</button>
+      <button class="home-menu button learn-domain-button" onclick="showLearnQuestions('SPORTS')">SPORTS</button>
+    </div>
+    <button class="back-btn" onclick="showHome()">Retour</button>
+  </div>
+    <!-- Section pour afficher les domaines -->
+    <div class="domain-section" style="display: none;">
+      <h2>Choisissez un domaine :</h2>
+      <div class="domain-list">
+        <button onclick="selectDomain('ARTS')">ARTS, CULTURE, MYTHOLOGIES ET RELIGIONS</button>
+        <button onclick="selectDomain('HISTOIRE')">HISTOIRE, POLITIQUE ET SOCIÉTÉ</button>
+        <button onclick="selectDomain('GÉOGRAPHIE')">GÉOGRAPHIE</button>
+        <button onclick="selectDomain('SCIENCES')">SCIENCES ET TECHNIQUES</button>
+        <button onclick="selectDomain('SPORTS')">SCIENCES HUMAINES ET SOCIALES, SPORTS</button>
+        <button onclick="selectDomain('ENTRAINEMENT')">ENTRAÎNEMENT INTENSIF</button>
+      </div>
+      <button class="back-btn" onclick="showHome()">Retour</button>
+    </div>
+
+    <!-- Section pour afficher les QCM -->
+    <div class="qcm-section" style="display: none;">
+      <h2>Questions sur le domaine : <span id="selected-domain"></span></h2>
+      <form id="qcm-form">
+        <div id="questions-container"></div>
+        <button type="button" class="submit-btn" onclick="calculateScore()">Soumettre</button>
+      </form>
+      <button class="back-btn" onclick="showDomains()">Changer de domaine</button>
+    </div>
+
+    <!-- Section pour afficher le score -->
+    <div class="score-section" style="display: none;">
+      <h2>Résultat :</h2>
+      <p class="score" id="score-display"></p>
+      <button class="back-btn" onclick="showDomains()">Recommencer</button>
+    </div>
+  </main>
+
+  <script>
+    // Base de données des QCM (identique à la version précédente)
+    const qcmData = {
+      "ARTS": [
+        { question: "Qui a écrit 'Les Misérables' ?", options: ["Victor Hugo", "Émile Zola", "Albert Camus"], correct: [0,1] },
+        { question: "Quel mouvement artistique est associé à Picasso ?", options: ["Cubisme", "Surréalisme", "Impressionnisme"], correct: [0] },
+        { question: "Chrétien de Troyes est connu pour avoir écrit?", options: ["Le Roman de Renart", "Perceval ou le Conte du Graal", "Tristan et Iseult","La Chanson de Roland"], correct: [] },
+        { question: "Les poètes/chanteurs du Moyen Âge étaient appelés?", options: ["descompagnons du geste", "des fabulateurs", "des trouvères","des colporteurs"], correct: [] },
+        { question: "Quelle association est correcte ?", options: ["La Ballade des pendus – François Villon", "La Chanson de Roland – Guillaume de Lorris", "Le Roman de la Rose– Chrétien de Troyes","Le Roman de Renart – Turold"], correct: [] },
+        { question: "Marie de France est célèbre pour avoir écrit", options: ["Perceval ou le conte du Graal", "des fabliaux", "des ballades","des lais"], correct: [] },
+        { question: "Un isopet (ou ysopet) est ?", options: ["une chanson de geste", "un récit épique", "un recueil de fables","une forme de poésie lyrique"], correct: [] },
+        { question: "Cette histoire met en scène un avocat trompeur qui finit par trouver plus rusé que lui à travers un mouton", options: ["La Farce de Maître Pathelin", "La Fable de Maître Pathelin", "La Foire de Maître Pathelin","La Ballade de Maître Pathelin"], correct: [] },
+        { question: "Parmi les quatre propositions ci-après, quelle est celle où les écrivains cités sont tous des humanistes du xvie siècle ?", options: ["Rabelais ; Ronsard ; Érasme ; Du Bellay", "Rabelais ; Descartes ; Machiavel ; Érasme", "Ronsard ; Montesquieu ; Montaigne ; Chrétien de Troyes c D Cervantès"], correct: [] },
+        { question: "8. « Être ou ne pas être, telle est la question. » Quel héros de Shakespeare clame cette phrase ?", options: ["Macbeth", "Othello", "Hamlet","Le Roi Lear"], correct: [] },
+        { question: "Qui est Gargantua ?", options: ["Le père de Gargamelle", "Le fils de Pantagruel", "Le frère de Grandgousier","Le père de Pantagruel"], correct: [] },
+        { question: "", options: ["", "", ""], correct: [] },
+        { question: "", options: ["", "", ""], correct: [] },
+        { question: "", options: ["", "", ""], correct: [] },
+        { question: "", options: ["", "", ""], correct: [] },
+        { question: "", options: ["", "", ""], correct: [] },
+        { question: "", options: ["", "", ""], correct: [] },
+        { question: "", options: ["", "", ""], correct: [] },
+        { question: "", options: ["", "", ""], correct: [] },
+        { question: "", options: ["", "", ""], correct: [] },
+        { question: "", options: ["", "", ""], correct: [] },
+        { question: "", options: ["", "", ""], correct: [] },
+        { question: "", options: ["", "", ""], correct: [] },
+        { question: "", options: ["", "", ""], correct: [] },
+        { question: "", options: ["", "", ""], correct: [] },
+        { question: "", options: ["", "", ""], correct: [] },
+        { question: "", options: ["", "", ""], correct: [] },
+        { question: "", options: ["", "", ""], correct: [] }
+      ],
+      "HISTOIRE": [
+        { question: "En quelle année a eu lieu la Révolution française ?", options: ["1789", "1799", "1804"], correct: [0] },
+        { question: "Qui était le premier empereur romain ?", options: ["Auguste", "César", "Néron"], correct: [0] },{ question: "Qui était le premier empereur romain ?", options: ["Auguste", "César", "Néron"], correct: [0] },{ question: "Qui était le premier empereur romain ?", options: ["Auguste", "César", "Néron"], correct: [0] },
+        { question: "", options: ["", "", ""], correct: [] },
+        { question: "", options: ["", "", ""], correct: [] },
+        { question: "", options: ["", "", ""], correct: [] },
+        { question: "", options: ["", "", ""], correct: [] },
+        { question: "", options: ["", "", ""], correct: [] },
+        { question: "", options: ["", "", ""], correct: [] },
+        { question: "", options: ["", "", ""], correct: [] },
+        { question: "", options: ["", "", ""], correct: [] },
+        { question: "", options: ["", "", ""], correct: [] },
+        { question: "", options: ["", "", ""], correct: [] },
+        { question: "", options: ["", "", ""], correct: [] },
+        { question: "", options: ["", "", ""], correct: [] },
+        { question: "", options: ["", "", ""], correct: [] },
+        { question: "", options: ["", "", ""], correct: [] },
+        { question: "", options: ["", "", ""], correct: [] },
+        { question: "", options: ["", "", ""], correct: [] },
+        { question: "", options: ["", "", ""], correct: [] },
+        { question: "", options: ["", "", ""], correct: [] },
+        { question: "", options: ["", "", ""], correct: [] },
+        { question: "", options: ["", "", ""], correct: [] },
+        { question: "", options: ["", "", ""], correct: [] },
+        { question: "", options: ["", "", ""], correct: [] },
+      ],
+      "GÉOGRAPHIE": [
+        { question: "Quel est le plus grand continent ?", options: ["Asie", "Afrique", "Amérique"], correct: [0] },
+        { question: "Quelle est la capitale de l'Australie ?", options: ["Sydney", "Canberra", "Melbourne"], correct: [1] }
+      ],
+      "SCIENCES": [
+        { question: "Quelle est la formule chimique de l'eau ?", options: ["H2O", "CO2", "O2"], correct: [0] },
+        { question: "Quel est l'organe principal du système nerveux ?", options: ["Cœur", "Cerveau", "Foie"], correct: [1] }
+      ],
+      "SPORTS": [
+        { question: "Combien de joueurs y a-t-il dans une équipe de football ?", options: ["11", "9", "15"], correct: [0] },
+        { question: "Quel pays a accueilli les JO de 2016 ?", options: ["Brésil", "Chine", "Japon"], correct: [0] }
+      ],
+      "ENTRAINEMENT": [
+        { question: "Combien font 2 + 2 ?", options: ["3", "4", "5"], correct: [1] },
+        { question: "Quel est la capitale de la France ?", options: ["Paris", "Londres", "Berlin"], correct: [0] }
+      ]
+    };
+
+    let selectedDomain = "";
+    let score = 0;
+
+    function hideAllSections() {
+      const sections = ['home-section', 'domain-section', 'qcm-section', 'score-section', 'help-section'];
+      sections.forEach(section => {
+        const el = document.querySelector(`.${section}`);
+        el.style.display = 'none';
+        el.classList.remove('active');
+      });
+    }
+
+    function showHome() {
+      hideAllSections();
+      const homeSection = document.querySelector('.home-section');
+      homeSection.style.display = 'block';
+      homeSection.classList.add('active');
+    }
+    function learn(){
+        hideAllSections();
+      const helpSection = document.querySelector('.help-section');
+      helpSection.style.display = 'block';
+      helpSection.classList.add('active');  
+    }
+    function showHelp() {
+      hideAllSections();
+      const helpSection = document.querySelector('.help-section');
+      helpSection.style.display = 'block';
+      helpSection.classList.add('active');
+    }
+
+    function showDomains() {
+      hideAllSections();
+      const domainSection = document.querySelector('.domain-section');
+      domainSection.style.display = 'block';
+      domainSection.classList.add('active');
+    }
+
+    function selectDomain(domain) {
+      selectedDomain = domain;
+      document.getElementById("selected-domain").textContent = domain;
+      displayQuestions(domain);
+      hideAllSections();
+      const qcmSection = document.querySelector('.qcm-section');
+      qcmSection.style.display = 'block';
+      qcmSection.classList.add('active');
+    }
+
+    function displayQuestions(domain) {
+      const questionsContainer = document.getElementById("questions-container");
+      questionsContainer.innerHTML = "";
+
+      const questions = qcmData[domain];
+      questions.forEach((qcm, index) => {
+        const questionDiv = document.createElement("div");
+        questionDiv.classList.add("question");
+
+        const questionTitle = document.createElement("h4");
+        questionTitle.textContent = `${index + 1}. ${qcm.question}`;
+        questionDiv.appendChild(questionTitle);
+
+        qcm.options.forEach((option, i) => {
+          const label = document.createElement("label");
+          label.innerHTML = `
+            <input type="checkbox" name="question-${index}" value="${i}">
+            ${option}
+          `;
+          questionDiv.appendChild(label);
+          questionDiv.appendChild(document.createElement("br"));
+        });
+
+        questionsContainer.appendChild(questionDiv);
+      });
+    }
+
+    function calculateScore() {
+      const questions = qcmData[selectedDomain];
+      const form = document.getElementById("qcm-form");
+      score = 0;
+
+      questions.forEach((qcm, index) => {
+        const selectedOptions = Array.from(form.querySelectorAll(`input[name="question-${index}"]:checked`))
+          .map(input => parseInt(input.value));
+
+        const isCorrect = JSON.stringify(selectedOptions.sort()) === JSON.stringify(qcm.correct.sort());
+        if (isCorrect) {
+          score += 1;
+        } else {
+          score -= 0.5;
+        }
+      });
+
+      displayScore();
+    }
+
+    function displayScore() {
+      hideAllSections();
+      const scoreSection = document.querySelector('.score-section');
+      scoreSection.style.display = 'block';
+      scoreSection.classList.add('active');
+      document.getElementById("score-display").textContent = `Votre score : ${score.toFixed(1)}`;
+    }
+  </script>
+</body>
+</html>
